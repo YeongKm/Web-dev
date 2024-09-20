@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>message</title>
+</head>
+<body>
+    <script>
+        function getMessage(name) {
+            let myString1 = "Hello";
+            let myString2 = "World";
+                return `${myString1} ${myString2} !`;
+        }
+
+        const message = getMessage('Ornella');
+        document.write(message);
+
+        function introduction1() {
+      document.write("안녕하세요! ");
+    }
+
+    function introduction2() {
+      document.write("저는 제주대학교 컴퓨터공학전공 3학년입니다.");
+    }
+
+    function introduction3() {
+      document.write("제이름은 김민영입니다.");
+
+    }
+
+        let index = 0;
+    
+    const intros = [introduction1, introduction2, introduction3];
+
+    setInterval(() => {
+      intros[index]();
+      
+      index = (index + 1) % intros.length;
+    }, 3000);
+    
+    </script>
+</body>
+</html>
