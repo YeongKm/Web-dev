@@ -1,0 +1,15 @@
+.highlight {
+    background-color: yellow;
+    }
+.error {
+    background-color: lightcoral;
+    border: red;
+    }
+.button {
+    flex : 1;
+    padding : 5;
+    background-color:aqua;
+    color : red;
+    border-radius : 100;
+    border-color : white;   
+}
