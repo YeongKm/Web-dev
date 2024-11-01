@@ -1,0 +1,132 @@
+/* 기본 스타일 */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, textarea, p, blockquote,
+th, td, input, select, button {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+fieldset, img {
+    border: 0;
+    width: 350px;
+    height: max-content;
+}
+
+dl, ul, ol, menu, li {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+
+input, select, textarea, button {
+    vertical-align: middle;
+    font-size: 100%;
+}
+
+button {
+    border: 0 none;
+    background-color: blue;
+    cursor: pointer;
+    color: #fff;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'MalgunGothic', '맑은 고딕', sans-serif;
+    color: #333;
+}
+
+input[type='text'], input[type='password'], input[type='submit'], input[type='search'], input[type='tel'], input[type='email'], input[type='button'], input[type='reset'] {
+    -webkit-appearance: none;
+    border-radius: 10px;
+    background-color: rgb(236, 236, 236);
+    border-style: hidden;
+}
+
+input[type='search']::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:active, a:hover {
+    text-decoration: none;
+}
+
+address, caption, cite, code, dfn, em, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+body.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: max-content;
+    height: max-content;
+    justify-content: center;
+    gap: 10px;
+    max-width: 350px;
+}
+
+button {
+    color: #fff;
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+}
+
+input {
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+/* 다크 모드 스타일 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    input[type='text'], input[type='password'], input[type='submit'], input[type='search'], input[type='tel'], input[type='email'], input[type='button'], input[type='reset'] {
+        background-color: #333;
+        color: #e0e0e0;
+        border: 1px solid #555;
+    }
+
+    button {
+        background-color: #1e88e5;
+        color: #ffffff;
+    }
+
+    a {
+        color: #90caf9;
+    }
+
+    h1, h2, h3, h4, h5, h6, label {
+        color: #ffffff;
+    }
+}
