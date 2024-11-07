@@ -53,17 +53,18 @@ startButton.addEventListener('click', () => {
 typedValueElement.addEventListener('input', () => {
     const currentWord = words[wordIndex];
     const typedValue = typedValueElement.value;
+    
     if (typedValue === currentWord && wordIndex === words.length - 1) {
         const elapsedTime = new Date().getTime() - startTime;
         const message = `CONGRATULATIONS! You finished in ${elapsedTime / 1000} seconds.`;
         resultElement.innerText = message;
         modal.style.display = 'block';
 
-        // **변경된 부분**: 최고 점수 갱신 및 저장
+        // 최고 점수 갱신 및 저장
         if (!bestScore || elapsedTime < bestScore) {
             bestScore = elapsedTime;
-            localStorage.setItem('bestScore', bestScore); // 최고 점수를 localStorage에 저장
-            bestScoreElement.innerText = `최고 기록: ${bestScore / 1000}초`; // **변경된 부분**: 모달에서 최고 기록 업데이트
+            localStorage.setItem('bestScore', bestScore);
+            bestScoreElement.innerText = `최고 기록: ${bestScore / 1000}초`;
         }
 
         typedValueElement.disabled = true;
@@ -71,13 +72,22 @@ typedValueElement.addEventListener('input', () => {
     } else if (typedValue.endsWith(' ') && typedValue.trim() === currentWord) {
         typedValueElement.value = '';
         wordIndex++;
+        
+        // 올바른 입력일 경우 CSS 클래스 추가
+        typedValueElement.classList.remove('incorrect');
+        typedValueElement.classList.add('correct');
+        
         for (const wordElement of quoteElement.childNodes) {
             wordElement.className = '';
         }
         quoteElement.childNodes[wordIndex].className = 'highlight';
     } else if (currentWord.startsWith(typedValue)) {
-        typedValueElement.className = '';
+        typedValueElement.className = ''; // 올바른 경우 클래스 제거
+        typedValueElement.classList.remove('incorrect');
+        typedValueElement.classList.add('correct'); // 올바른 입력이므로 클래스 추가
     } else {
-        typedValueElement.className = 'error';
+        typedValueElement.className = 'error'; // 잘못된 경우
+        typedValueElement.classList.remove('correct');
+        typedValueElement.classList.add('incorrect'); // 잘못된 입력이므로 클래스 추가
     }
 });
