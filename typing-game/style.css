@@ -64,3 +64,25 @@ h2{
     cursor: pointer;
     transition: box-shadow 0.2s;
 }
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    transition: all 0.3s ease; /* 부드러운 전환 효과 추가 */
+    width: 300px; /* 입력 필드 너비 설정 */
+}
+
+input:focus {
+    border: 2px solid blue; /* 포커스 시 테두리 색상 변경 */
+    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* 포커스 시 그림자 추가 */
+}
+
+input.correct {
+    border: 2px solid green; /* 올바른 입력일 경우 테두리 색상 변경 */
+    background-color: #e6ffcc; /* 올바른 입력 배경색 */
+}
+
+input.incorrect {
+    border: 2px solid red; /* 잘못된 입력일 경우 테두리 색상 변경 */
+    background-color: lightcoral; /* 잘못된 입력 배경색 */
+}
