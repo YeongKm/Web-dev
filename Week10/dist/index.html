@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Carbon Trigger</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="container">
+    <div class="image-holder">
+        <img alt="plants and people" src="images/plants-people.png" class="header-image" />
+    </div>
+    <div>
+        <h1>Welcome to Your Personal Carbon Trigger!</h1>
+    </div>
+    <form class="form-data" autocomplete="on">
+        <div>
+            <h2>New? Add your Information</h2>
+        </div>
+        <div>
+            <div class="region" for="region-1"><h3>Region Name 1</h3></div>
+            <input type="text" id="region-1" required class="region-name region-name-1" />
+        </div>
+        <div>
+            <div class="region" for="region-2"><h3>Region Name 2</h3></div>
+            <input type="text" id="region-2" class="region-name region-name-2" />
+        </div>
+        <div>
+            <div class="region" for="region-3"><h3>Region Name 3</h3></div>
+            <input type="text" id="region-3" class="region-name region-name-3" />
+        </div>
+        <div>
+            <div class="api" for="api"><h3>Your API Key from tmrow</h3></div>
+            <input type="text" id="api" required class="api-key" />
+        </div>
+        <button type="submit" class="search-btn">Submit</button>
+    </form>
+    <div class="result"> <!-- 처음에는 숨겨진 상태 -->
+        <div class="loading">loading...</div> <!-- 로딩 화면도 숨김 -->
+        <div class="errors"></div>
+        <div class="data"></div>
+        <div class="result-container">
+            <p><strong>Region: </strong><span class="my-region"></span></p>
+            <p><strong>Carbon Usage: </strong><span class="carbon-usage"></span></p>
+            <p><strong>Fossil Fuel Percentage: </strong><span class="fossil-fuel"></span></p>
+        </div>
+        <div class="btn-box">
+            <button class="clear-btn">Change region</button> <!-- Change region 버튼도 숨김 -->
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
