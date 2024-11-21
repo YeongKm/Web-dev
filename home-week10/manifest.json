@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "Weather Extension",
+    "description": "Get the current weather of any city",
+    "version": "1.0",
+    "permissions": [
+      "activeTab",
+      "https://api.openweathermap.org/*"
+    ],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": "icon.png"
+    }
+  }
