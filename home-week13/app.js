@@ -252,7 +252,7 @@ class Boss extends GameObject {
         this.width = 150;
         this.height = 100;
         this.type = "Boss";
-        this.life = 20;
+        this.life = 20; // 총 라이프 20
         this.img = bossImg;
 
         let moveId = setInterval(() => {
@@ -286,12 +286,14 @@ class Boss extends GameObject {
         gameObjects.push(rightLaser);
     }
 
-    decrementLife() {
-        this.life--;
+    // damage만큼 라이프 감소
+    decrementLife(damage) {
+        this.life -= damage;
         if (this.life <= 0) {
             this.dead = true;
         }
     }
+
     draw(ctx) {
         super.draw(ctx);
         ctx.font = "20px Arial";
@@ -411,31 +413,54 @@ function meteorStrike() {
 
 // 충돌 처리 변경: Green 레이저 관통 처리
 eventEmitter.on(Messages.COLLISION_ENEMY_LASER, (_, { first, second }) => {
-    second.dead = true; 
-    hero.incrementPoints();
-    hero.incrementGauge(first.damage === 2 ? 200 : 100);
+    if (second.type === "Boss") {
+        // 보스일 경우 life를 레이저 damage만큼 감소
+        const damage = first.damage; // green=2, red/blue=1 이미 설정됨
+        second.decrementLife(damage);
+        hero.incrementPoints();
+        hero.incrementGauge(damage === 2 ? 200 : 100);
 
-    if (second.type !== 'Boss') {
-        if (shieldDropCount < 2 && Math.random() < 0.2) {
-            shieldDropCount++;
-            const shieldItem = new ShieldItem(second.x, second.y);
-            gameObjects.push(shieldItem);
-        }
-    }
-
-    if (first.damage === 2) {
-        // Green laser: 관통
-        first.penetration -= 1;
-        if (first.penetration <= 0) {
+        // 레이저 처리
+        if (damage === 2) {
+            // Green laser: 관통
+            first.penetration -= 1;
+            if (first.penetration <= 0) {
+                first.dead = true;
+            }
+        } else {
+            // Red, Blue laser: 한 마리 제거 후 소멸
             first.dead = true;
         }
-    } else {
-        // Red, Blue laser: 한마리 제거 후 소멸
-        first.dead = true;
-    }
 
-    if (isEnemiesDead()) {
-        endStage();
+        // 보스가 죽었는지 확인
+        if (second.dead && isEnemiesDead()) {
+            endStage();
+        }
+    } else {
+        // 일반 적일 경우 기존 로직 유지
+        second.dead = true;
+        hero.incrementPoints();
+        hero.incrementGauge(first.damage === 2 ? 200 : 100);
+        if (second.type !== 'Boss') {
+            if (shieldDropCount < 2 && Math.random() < 0.2) {
+                shieldDropCount++;
+                const shieldItem = new ShieldItem(second.x, second.y);
+                gameObjects.push(shieldItem);
+            }
+        }
+
+        if (first.damage === 2) {
+            first.penetration -= 1;
+            if (first.penetration <= 0) {
+                first.dead = true;
+            }
+        } else {
+            first.dead = true;
+        }
+
+        if (isEnemiesDead()) {
+            endStage();
+        }
     }
 });
 
@@ -499,6 +524,8 @@ eventEmitter.on(Messages.GAME_END_LOSS, () => {
 
 function endGame(win) {
     clearInterval(gameLoopId);
+    // 게임 종료 후 gameEnded = true 설정
+    gameEnded = true; 
     setTimeout(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "black";
@@ -515,6 +542,9 @@ function resetGame() {
     if (gameLoopId) {
         clearInterval(gameLoopId);
     }
+    eventEmitter.clear(); 
+    stageTransitioning = false; 
+    gameEnded = false; // 재시작 시 상태 초기화
     if (hero) {
         hero.sideHeroes.forEach(sh => sh.destroy());
         hero = null;
@@ -523,6 +553,7 @@ function resetGame() {
     initGame();
     gameLoopId = setInterval(gameLoop, 100);
 }
+
 
 function createHero() {
     hero = new Hero(canvas.width / 2 - 45, canvas.height - canvas.height / 4);
@@ -646,10 +677,18 @@ function displayMessage(message, color) {
     ctx.fillText(message, canvas.width / 2, canvas.height / 2);
 }
 
-// Input Handlers
 window.addEventListener('keydown', (e) => {
     if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
         e.preventDefault();
+    }
+
+    if (e.key === "Enter") {
+        console.log("Enter key pressed");
+        // 게임 종료 상태일 때만 엔터키로 재시작
+        if (gameEnded) {
+            resetGame();
+        }
+        return;
     }
 
     if (!hero || hero.dead) return;
@@ -668,16 +707,12 @@ window.addEventListener('keydown', (e) => {
         hero.updateSideHeroes();
     } else if (e.key === " ") {
         if (hero.canFire()) hero.fire();
-    } else if (e.key === "Enter") {
-        resetGame();
     } else if (e.key.toLowerCase() === "m") {
         eventEmitter.emit(Messages.KEY_EVENT_METEOR);
     } else if (e.key.toLowerCase() === "r") {
-        // R키 누를 때 무기 변경: Red → Blue → Green → Red
         hero.weaponType = (hero.weaponType + 1) % 3;
     }
 });
-
 eventEmitter.on(Messages.KEY_EVENT_METEOR, () => {
     if (hero && hero.canUseMeteor()) {
         meteorStrike();
